@@ -54,4 +54,23 @@ public class UserController {
         userRepository.deleteById(id);
         return new ReturnResponse(true, "deleted successfully");
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<CustomerResponse> getCustomer(@PathVariable Long id) {
+        return userRepository.findById(id)
+                .map(customer -> {
+                    CustomerResponse response = new CustomerResponse(
+                            customer.getId(),
+                            customer.getProduct_name(),
+                            customer.getDescription(),
+                            customer.getPrice(),
+                            customer.getQuantity(),
+                            customer.getCategory(),
+                            customer.getCreated_at(),
+                            customer.getUpdated_at()
+                    );
+                    return ResponseEntity.ok(response);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

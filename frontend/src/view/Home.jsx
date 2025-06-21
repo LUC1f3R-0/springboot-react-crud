@@ -1,8 +1,12 @@
 import React from 'react';
 import axiosInstance from '../api/APIInstances';
 import BUTTON from '../components/buttons';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
   const [pageData, setPageData] = React.useState([]);
   const [showDelete, setShowDelete] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState(null);
@@ -37,7 +41,7 @@ const Home = () => {
     try {
       const response = await axiosInstance.delete(`/user/${deleteId}`);
       const { success, message } = response.data
-      
+
       fetchData();
       setShowDelete(false);
       setDeleteId(null);
@@ -84,7 +88,7 @@ const Home = () => {
             ) : (
               pageData.map((data, index) => (
                 <tr key={data.id}>
-                  <td className="px-4 py-2 border text-center text-black">{index + 1}</td>
+                  <td className="px-4 py-2 border text-center text-black"><NavLink to={`/edit/${data.id}`} >{index + 1}</NavLink></td>
                   <td className="px-4 py-2 border text-black">{data.name}</td>
                   <td className="px-4 py-2 border text-black">{data.desc}</td>
                   <td className="px-4 py-2 border text-right text-black">{data.prs}</td>
